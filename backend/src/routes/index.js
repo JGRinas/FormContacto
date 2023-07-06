@@ -16,12 +16,12 @@ router.post("/send-email", async (req, res) => {
     `;
 
   const transporter = nodemailer.createTransport({
-    host: "mail",
-    port: "",
+    host: process.env.EMAIL_HOST,
+    port: process.env.EMAIL_PORT,
     secure: false,
     auth: {
-      user: "email@",
-      pass: "password",
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
     },
     tls: {
         rejectUnauthorized: false,
@@ -29,10 +29,11 @@ router.post("/send-email", async (req, res) => {
   });
 
   const info = await transporter.sendMail({
-    from: "'Titulo'",
-    to: "correo destino",
+    from: "'Derecho unne' <derecho@unne.com.ar>",
+    to: process.env.EMAIL_TO,
     subject: "Formulario de contacto",
-    text: "hello world",
+    //text: "hello world",
+    html: contentHTML
   });
 
   console.log("Message sent", info.messageId);
