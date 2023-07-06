@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import axios from "axios";
 
 const ContactForm = () => {
+  const [mensaje, setMensaje] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    description: "",
+  });
+
+  const handleOnChange = (e) => {
+    setMensaje({ ...mensaje, [e.target.name]: e.target.value });
+  };
+
+  const handleOnSubmit = (e) => {
+    console.log(mensaje);
+    e.preventDefault();
+    axios
+      .post("http://localhost:3010/send-email", mensaje)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => console.error(err));
+  };
+
   return (
     <>
-      <form style={{padding: '50px', backgroundColor: "#e6e6e6", borderRadius: "10px", margin: "100px"}}>
+      <form
+        style={{
+          padding: "50px",
+          backgroundColor: "#e6e6e6",
+          borderRadius: "10px",
+          margin: "100px",
+        }}
+        onSubmit={handleOnSubmit}
+      >
         <fieldset>
           <legend>Enviar mensaje</legend>
           <div className='mb-3'>
@@ -15,6 +46,7 @@ const ContactForm = () => {
               name='name'
               className='form-control'
               placeholder='Juan Perez'
+              onChange={handleOnChange}
             />
           </div>
 
@@ -27,6 +59,7 @@ const ContactForm = () => {
               name='email'
               className='form-control'
               placeholder='example@gmail.com'
+              onChange={handleOnChange}
             />
           </div>
 
@@ -39,6 +72,7 @@ const ContactForm = () => {
               name='subject'
               className='form-control'
               placeholder='Cómo puedo enviar un mensaje'
+              onChange={handleOnChange}
             />
           </div>
 
@@ -51,6 +85,7 @@ const ContactForm = () => {
               name='description'
               className='form-control'
               placeholder='Lo que pasa es que...'
+              onChange={handleOnChange}
             />
           </div>
 
